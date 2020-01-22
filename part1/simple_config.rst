@@ -19,13 +19,13 @@ And we'll have a single DDR3 memory channel, also connected to the memory bus.
 gem5 configuration scripts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The gem5 binary takes, as a parameter, a python script which sets up and executes the simulation.
+The gem5 binary takes, as a parameter, a Python script which sets up and executes the simulation.
 In this script, you create a system to simulate, create all of the components of the system, and specify all of the parameters for the system components.
 Then, from the script, you can begin the simulation.
 
 This script is completely user-defined.
 You can choose to use any valid Python code in the configuration scripts.
-This book provides on example of a style that relies heavily classes and inheritance in Python.
+This book provides an example of a style that relies heavily on classes and inheritance in Python.
 As a gem5 user, it's up to you how simple or complicated to make your configuration scripts.
 
 There are a number of example configuration scripts that ship with gem5 in ``configs/examples``.
@@ -53,8 +53,8 @@ Let's start by creating a new config file and opening it:
     mkdir configs/tutorial
     touch configs/tutorial/simple.py
 
-This is just a normal python file that will be executed by the embedded python in the gem5 executable.
-Therefore, you can use any features and libraries available in python.
+This is just a normal Python file that will be executed by the embedded Python in the gem5 executable.
+Therefore, you can use any features and libraries available in Python.
 
 The first thing we'll do in this file is import the m5 library and all SimObjects that we've compiled.
 
@@ -66,7 +66,7 @@ The first thing we'll do in this file is import the m5 library and all SimObject
 Next, we'll create the first SimObject: the system that we are going to simulate.
 The ``System`` object will be the parent of all the other objects in our simulated system.
 The ``System`` object contains a lot of functional (not timing-level) information, like the physical memory ranges, the root clock domain, the root voltage domain, the kernel (in full-system simulation), etc.
-To create the system SimObject, we simply instantiate it like a normal python class:
+To create the ``System`` SimObject, we simply instantiate it like a normal python class:
 
 .. code-block:: python
 
@@ -75,7 +75,7 @@ To create the system SimObject, we simply instantiate it like a normal python cl
 Now that we have a reference to the system we are going to simulate, let's set the clock on the system.
 We first have to create a clock domain.
 Then we can set the clock frequency on that domain.
-Setting parameters on a SimObject is exactly the same as setting members of an object in python, so we can simply set the clock to 1 GHz, for instance.
+Setting parameters on a SimObject is exactly the same as setting members of an object in Python, so we can simply set the clock to 1 GHz, for instance.
 Finally, we have to specify a voltage domain for this clock domain.
 Since we don't care about system power right now, we'll just use the default options for the voltage domain.
 
@@ -89,8 +89,8 @@ Once we have a system, let's set up how the memory will be simulated.
 We are going to use *timing* mode for the memory simulation.
 You will almost always use timing mode for the memory simulation, except in special cases like fast-forwarding and restoring from a checkpoint.
 We will also set up a single memory range of size 512 MB, a very small system.
-Note that in the python configuration scripts, whenever a size is required you can specify that size in common vernacular and units like ``'512MB'``.
-Similarly, with time you can use time units (e.g., ``'5ns'``).
+Note that in the Python configuration scripts, whenever a size is required you can specify that size in vernacular units like ``'512MB'``.
+Similarly, for time you can use vernacular time units, e.g. ``'5ns'``.
 These will automatically be converted to a common representation, respectively.
 
 .. code-block:: python
@@ -184,7 +184,7 @@ Our system should look like :ref:`simple-config-fig`.
 Next, we need to set up the process we want the CPU to execute.
 Since we are executing in syscall emulation mode (SE mode), we will just point the CPU at the compiled executable.
 We'll execute a simple "Hello world" program.
-There's already one that is compiled that ships with gem5, so we'll use that.
+There's already a compiled one that ships with gem5, so we'll use that.
 You can specify any application built for x86 and that's been statically compiled.
 
 .. sidebar:: Full system vs syscall emulation
@@ -201,9 +201,9 @@ You can specify any application built for x86 and that's been statically compile
     However, if you need high fidelity modeling of the system, or OS interaction like page table walks are important, then you should use FS mode.
 
 First, we have to create the process (another SimObject).
-Then we set the processes command to the command we want to run.
-This is a list similar to argv, with the executable in the first position and the arguments to the executable in the rest of the list.
-Then we set the CPU to use the process as it's workload, and finally create the functional execution contexts in the CPU.
+Then we set the process's command to the command we want to run.
+This is a list similar to ``argv``, with the executable in the first position and the arguments to the executable in the rest of the list.
+Then we set the CPU to use the process as its workload, and create the functional execution contexts in the CPU.
 
 .. code-block:: python
 
@@ -215,18 +215,18 @@ Then we set the CPU to use the process as it's workload, and finally create the 
 The final thing we need to do is instantiate the system and begin execution.
 First, we create the ``Root`` object.
 Then we instantiate the simulation.
-The instantiation process goes through all of the SimObjects we've created in python and creates the ``C++`` equivalents.
+The instantiation process goes through all of the SimObjects we've created in Python and creates the ``C++`` equivalents.
 
-As a note, you don't have to instantiate the python class then specify the parameters explicitly as member variables.
+As a note, you don't have to instantiate the Python class and then specify the parameters explicitly as member variables.
 You can also pass the parameters as named arguments, like the ``Root`` object below.
 
 .. code-block:: python
 
-  root = Root(full_system = False, system = system)
+  root = Root(full_system=False, system=system)
   m5.instantiate()
 
 Finally, we can kick off the actual simulation!
-As a side now, gem5 is now using Python 3-style ``print`` functions, so ``print`` is no longer a statement and must be called as a function.
+As a side note, gem5 is now using Python 3-style ``print`` functions, so ``print`` is no longer a statement and must be called as a function.
 
 .. code-block:: python
 
@@ -244,14 +244,14 @@ And once simulation finishes, we can inspect the state of the system.
 Running gem5
 ~~~~~~~~~~~~~~
 
-Now that we've created a simple simulation script (the full version of which can be found at gem5/configs/learning_gem5/part1/simple.py)
+Now that we've created a simple simulation script (the full version of which can be found at ``gem5/configs/learning_gem5/part1/simple.py``)
 we're ready to run gem5.
 gem5 can take many parameters, but requires just one positional argument, the simulation script.
 So, we can simply run gem5 from the root gem5 directory as:
 
 .. code-block:: sh
 
-  build/X86/gem5.opt configs/tutorial/simple.py
+  ./build/X86/gem5.opt configs/tutorial/simple.py
 
 The output should be:
 
@@ -281,8 +281,8 @@ Or, if you change the DDR controller to DDR4, the performance should be better.
 Additionally, you can change the CPU model. See ``gem5/build_opts/`` for lists
 of supported CPU models for each build option. Use ``MinorCPU`` to model an
 in-order CPU, or ``DerivO3CPU`` to model an out-of-order CPU. However, note that
-``DerivO3CPU`` currently does not work with simple.py, because it requires a
-system with separate instruction and data caches (``DerivO3CPU`` does work with
+``DerivO3CPU`` currently does not work with ``simple.py``, because it requires a
+system with separate instruction and data caches (``DerivO3CPU`` *does* work with
 the configuration in the next section).
 
 Next, we will add caches to our configuration file to model a more complex system.
