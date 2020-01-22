@@ -69,7 +69,7 @@ Many of these parameters do not have defaults, so we are required to set these p
 
 ----------------------------------------------
 
-Now, to create caches with specific parameters, we are first going to create a new file, ``caches.py``, in the same directory as simple.py, ``configs/tutorial``.
+Now, to create caches with specific parameters, we are first going to create a new file, ``caches.py``, in the same directory as ``simple.py``: ``configs/tutorial``.
 The first step is to import the SimObject(s) we are going to extend in this file.
 
 .. code-block:: python
@@ -95,7 +95,7 @@ To see all of the possible configuration options, and to find which are required
 In this case, we are using ``BaseCache``.
 
 We have extended ``BaseCache`` and set most of the parameters that do not have default values in the ``BaseCache`` SimObject.
-Next, let's two more sub-classes of ``L1Cache``, an ``L1DCache`` and ``L1ICache``
+Next, let's add two more sub-classes of ``L1Cache``, an ``L1DCache`` and an ``L1ICache``.
 
 .. code-block:: python
 
@@ -153,7 +153,7 @@ Our ``L1ICache`` and ``L1DCache`` classes now become:
         def connectCPU(self, cpu):
             self.cpu_side = cpu.dcache_port
 
-Finally, let's add functions to the ``L2Cache`` to connect to the memory-side and CPU-side bus, respectively.
+Finally, let's add two functions to the ``L2Cache`` to connect to the memory-side and CPU-side bus, respectively.
 
 .. code-block:: python
 
@@ -179,8 +179,8 @@ First, let's copy the script to a new name.
 
     cp simple.py two_level.py
 
-First, we need to import the names from the ``caches.py`` file into the namespace.
-We can add the following to the top of the file (after the m5.objects import), as you would with any Python source.
+Then, we need to import the names from the ``caches.py`` file into the namespace.
+We can add the following to the top of the file (after the ``m5.objects`` import), as you would with any Python source.
 
 .. code-block:: python
 
@@ -209,7 +209,7 @@ Also, You need to *remove* the previous lines which connected the cache ports di
 
 We can't directly connect the L1 caches to the L2 cache since the L2 cache only expects a single port to connect to it.
 Therefore, we need to create an L2 bus to connect our L1 caches to the L2 cache.
-The, we can use our helper function to connect the L1 caches to the L2 bus.
+We can use our helper function to connect the L1 caches to the L2 bus.
 
 .. code-block:: python
 
@@ -218,7 +218,7 @@ The, we can use our helper function to connect the L1 caches to the L2 bus.
     system.cpu.icache.connectBus(system.l2bus)
     system.cpu.dcache.connectBus(system.l2bus)
 
-Next, we can create out L2 cache and connect it to the L2 bus and the memory bus.
+Next, we can create our L2 cache and connect it to the L2 bus and the memory bus.
 
 .. code-block:: python
 
@@ -242,7 +242,7 @@ Although :py:mod:`optparse` is officially deprecated, many of the configuration 
 The minimum Python version is now 2.7, so py:mod:`argparse` is a better option when writing new scripts that don't need to interact with the current gem5 scripts.
 To get started using :py:mod:`optparse`, you can consult the online Python documentation.
 
-To add options to our two-level cache configuration, after importing our caches, let's add some options.
+To add options to our two-level cache configuration, after importing our caches, let's add an ``OptionParser``.
 
 .. code-block:: python
 
@@ -258,7 +258,7 @@ To add options to our two-level cache configuration, after importing our caches,
 Now, you can run ``build/X86/gem5.opt configs/tutorial/two_level_opts.py --help`` which will display the options you just added.
 
 Next, we need to pass these options onto the caches that we create in the configuration script.
-To do this, we'll simply change ``two_level.py`` to pass the options into the caches as a parameter to their constructor and add an appropriate constructor, next.
+To do this, we'll simply change ``two_level.py`` to pass the options into the caches as a parameter to their constructors and add an appropriate constructor.
 
 .. code-block:: python
 
@@ -281,7 +281,7 @@ So, in ``L1Cache`` we need to add the following after the static class members.
 
 Next, in the ``L1ICache``, we need to use the option that we created (``l1i_size``) to set the size.
 In the following code, there is guards for if ``options`` is not passed to the ``L1ICache`` constructor and if no option was specified on the command line.
-In these cases, we'll just use the default we've already specified for the size.
+In these cases, we'll just use the default value we've already specified for the size.
 
 .. code-block:: python
 
