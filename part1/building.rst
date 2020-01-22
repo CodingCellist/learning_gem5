@@ -42,7 +42,7 @@ The requirements are detailed below.
         sudo apt-get install git
 
 #. gcc 4.8+
-    You may need to use environment variables to point to a non-default version of gcc.
+    You may need to use environment variables to point to a non-default version of ``gcc``.
 
     On Ubuntu, you can install a development environment with
 
@@ -52,7 +52,7 @@ The requirements are detailed below.
 
 #. SCons_
     gem5 uses SCons as its build environment.
-    SCons is like make on steroids and uses Python scripts for all aspects of the build process.
+    SCons is like ``make`` on steroids and uses Python scripts for all aspects of the build process.
     This allows for a very flexible (if slow) build system.
 
     To get SCons on Ubuntu use
@@ -161,10 +161,10 @@ You can also specify these options on the command line to override any default.
 
 
 The main argument passed to SCons is what you want to build, ``build/X86/gem5.opt``.
-In this case, we are building gem5.opt (an optimized binary with debug symbols).
-We want to build gem5 in the directory build/X86.
+In this case, we are building ``gem5.opt`` (an optimized binary with debug symbols).
+We want to build gem5 in the directory ``build/X86``.
 Since this directory currently doesn't exist, SCons will look in ``build_opts`` to find the default parameters for X86.
-(Note: I'm using -j9 here to execute the build on 9 of my 8 cores on my machine.
+(Note: I'm using ``-j9`` here to execute the build on 9 of my 8 cores on my machine.
 You should choose an appropriate number for your machine, usually cores+1.)
 
 The output should look something like below:
