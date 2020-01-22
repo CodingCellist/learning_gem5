@@ -25,7 +25,7 @@ Creating cache objects
 ~~~~~~~~~~~~~~~~~~~~~~
 
 We are going to use the classic caches, instead of :ref:`ruby-intro-chapter`, since we are modeling a single CPU system and we don't care about modeling cache coherence.
-We will extend the Cache SimObject and configure it for our system.
+We will extend the ``Cache`` SimObject and configure it for our system.
 First, we must understand the parameters that are used to configure Cache objects.
 
 .. todo::
@@ -50,7 +50,7 @@ First, we must understand the parameters that are used to configure Cache object
 Cache
 **********************
 
-The Cache SimObject declaration can be found in :file:`src/mem/cache/Cache.py`.
+The ``Cache`` SimObject declaration can be found in :file:`src/mem/cache/Cache.py`.
 This Python file defines the parameters which you can set of the SimObject.
 Under the hood, when the SimObject is instantiated these parameters are passed to the C++ implementation of the object.
 The ``Cache`` SimObject inherits from the ``BaseCache`` object shown below.
@@ -76,7 +76,7 @@ The first step is to import the SimObject(s) we are going to extend in this file
 
     from m5.objects import Cache
 
-Next, we can treat the BaseCache object just like any other Python class and extend it.
+Next, we can treat the ``BaseCache`` object just like any other Python class and extend it.
 We can name the new cache anything we want.
 Let's start by making an L1 cache.
 
@@ -90,12 +90,12 @@ Let's start by making an L1 cache.
         mshrs = 4
         tgts_per_mshr = 20
 
-Here, we are setting some of the parameters of the BaseCache that do not have default values.
+Here, we are setting some of the parameters of the ``BaseCache`` that do not have default values.
 To see all of the possible configuration options, and to find which are required and which are optional, you have to look at the source code of the SimObject.
-In this case, we are using BaseCache.
+In this case, we are using ``BaseCache``.
 
 We have extended ``BaseCache`` and set most of the parameters that do not have default values in the ``BaseCache`` SimObject.
-Next, let's two more sub-classes of L1Cache, an L1DCache and L1ICache
+Next, let's two more sub-classes of ``L1Cache``, an ``L1DCache`` and ``L1ICache``
 
 .. code-block:: python
 
@@ -258,7 +258,7 @@ To add options to our two-level cache configuration, after importing our caches,
 Now, you can run ``build/X86/gem5.opt configs/tutorial/two_level_opts.py --help`` which will display the options you just added.
 
 Next, we need to pass these options onto the caches that we create in the configuration script.
-To do this, we'll simply change two_level.py to pass the options into the caches as a parameter to their constructor and add an appropriate constructor, next.
+To do this, we'll simply change ``two_level.py`` to pass the options into the caches as a parameter to their constructor and add an appropriate constructor, next.
 
 .. code-block:: python
 
@@ -267,7 +267,7 @@ To do this, we'll simply change two_level.py to pass the options into the caches
     ...
     system.l2cache = L2Cache(options)
 
-In caches.py, we need to add constructors (``__init__`` functions in Python) to each of our classes.
+In ``caches.py``, we need to add constructors (``__init__`` functions in Python) to each of our classes.
 Starting with our base L1 cache, we'll just add an empty constructor since we don't have any parameters which apply to the base L1 cache.
 However, we can't forget to call the super class's constructor in this case.
 If the call to the super class constructor is skipped, gem5's SimObject attribute finding function will fail and the result will be "``RuntimeError: maximum recursion depth exceeded``" when you try to instantiate the cache object.
