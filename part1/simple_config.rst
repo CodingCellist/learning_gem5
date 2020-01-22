@@ -145,18 +145,24 @@ In this example system, we have no caches.
 
 Next, we need to connect up a few other ports to make sure that our system will function correctly.
 We need to create an I/O controller on the CPU and connect it to the memory bus.
-Also, we need to connect a special port in the system up to the membus.
-This port is a functional-only port to allow the system to read and write memory.
+
+.. code-block:: python
+
+  system.cpu.createInterruptController()
 
 Connecting the PIO and interrupt ports to the memory bus is an x86-specific requirement.
 Other ISAs (e.g., ARM) do not require these 3 extra lines.
 
 .. code-block:: python
 
-  system.cpu.createInterruptController()
   system.cpu.interrupts[0].pio = system.membus.master
   system.cpu.interrupts[0].int_master = system.membus.slave
   system.cpu.interrupts[0].int_slave = system.membus.master
+
+Also, regardless of the ISA used, we need to connect a special port in the system up to the membus.
+This port is a functional-only port to allow the system to read and write memory.
+
+.. code-block:: python
 
   system.system_port = system.membus.slave
 
