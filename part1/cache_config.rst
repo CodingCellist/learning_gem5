@@ -26,7 +26,7 @@ Creating cache objects
 
 We are going to use the classic caches, instead of :ref:`ruby-intro-chapter`, since we are modeling a single CPU system and we don't care about modeling cache coherence.
 We will extend the ``Cache`` SimObject and configure it for our system.
-First, we must understand the parameters that are used to configure Cache objects.
+First, we must understand the parameters that are used to configure ``Cache`` objects.
 
 .. todo::
 
@@ -63,7 +63,7 @@ Within the ``BaseCache`` class, there are a number of *parameters*.
 For instance, ``assoc`` is an integer parameter.
 Some parameters, like ``write_buffers`` have a default value, 8 in this case.
 The default parameter is the first argument to ``Param.*``, unless the first argument is a string.
-The string argument of each of the parameters is a description of what the parameter is (e.g., ``tag_latency = Param.Cycles("Tag lookup latency")`` means that the ```tag_latency`` controls "The hit latency for this cache").
+The string argument of each of the parameters is a description of what the parameter is (e.g., ``tag_latency = Param.Cycles("Tag lookup latency")`` means that the ``tag_latency`` controls "The hit latency for this cache").
 
 Many of these parameters do not have defaults, so we are required to set these parameters before calling ``m5.instantiate()``.
 
