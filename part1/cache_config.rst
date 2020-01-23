@@ -242,18 +242,18 @@ Although :py:mod:`optparse` is officially deprecated, many of the configuration 
 The minimum Python version is now 2.7, so py:mod:`argparse` is a better option when writing new scripts that don't need to interact with the current gem5 scripts.
 To get started using :py:mod:`optparse`, you can consult the online Python documentation.
 
-To add options to our two-level cache configuration, after importing our caches, let's add an ``OptionParser``.
+To add options to our two-level cache configuration, after importing our caches, let's add an ``ArgumentParser``.
 
 .. code-block:: python
 
-    from optparse import OptionParser
+    from argparse import ArgumentParser
 
-    parser = OptionParser()
-    parser.add_option('--l1i_size', help="L1 instruction cache size")
-    parser.add_option('--l1d_size', help="L1 data cache size")
-    parser.add_option('--l2_size', help="Unified L2 cache size")
+    parser = ArgumentParser()
+    parser.add_argument('--l1i_size', help="L1 instruction cache size")
+    parser.add_argument('--l1d_size', help="L1 data cache size")
+    parser.add_argument('--l2_size', help="Unified L2 cache size")
 
-    (options, args) = parser.parse_args()
+    args = parser.parse_args()
 
 Now, you can run ``build/X86/gem5.opt configs/tutorial/two_level_opts.py --help`` which will display the options you just added.
 
@@ -262,10 +262,10 @@ To do this, we'll simply change ``two_level.py`` to pass the options into the ca
 
 .. code-block:: python
 
-    system.cpu.icache = L1ICache(options)
-    system.cpu.dcache = L1DCache(options)
+    system.cpu.icache = L1ICache(args)
+    system.cpu.dcache = L1DCache(args)
     ...
-    system.l2cache = L2Cache(options)
+    system.l2cache = L2Cache(args)
 
 In ``caches.py``, we need to add constructors (``__init__`` functions in Python) to each of our classes.
 Starting with our base L1 cache, we'll just add an empty constructor since we don't have any parameters which apply to the base L1 cache.
@@ -275,40 +275,42 @@ So, in ``L1Cache`` we need to add the following after the static class members.
 
 .. code-block:: python
 
-    def __init__(self, options=None):
+    def __init__(self, options):
         super(L1Cache, self).__init__()
         pass
 
 Next, in the ``L1ICache``, we need to use the option that we created (``l1i_size``) to set the size.
 In the following code, there is guards for if ``options`` is not passed to the ``L1ICache`` constructor and if no option was specified on the command line.
-In these cases, we'll just use the default value we've already specified for the size.
+In these cases, we'll just use the default value we've already specified for the size, this can be conveniently added to the arguments specified earlier:
 
 .. code-block:: python
 
-    def __init__(self, options=None):
+    parser.add_argument('--l1i_size', default='16kB', help="L1 instruction cache size")
+    parser.add_argument('--l1d_size', default='64kB', help="L1 data cache size")
+    parser.add_argument('--l2_size', default='256kB', help="Unified L2 cache size")
+
+Now we can use the specified size for the ``L1ICache``:
+
+.. code-block:: python
+
+    def __init__(self, options):
         super(L1ICache, self).__init__(options)
-        if not options or not options.l1i_size:
-            return
         self.size = options.l1i_size
 
 We can use the same code for the ``L1DCache``:
 
 .. code-block:: python
 
-    def __init__(self, options=None):
+    def __init__(self, options):
         super(L1DCache, self).__init__(options)
-        if not options or not options.l1d_size:
-            return
         self.size = options.l1d_size
 
 And the unified ``L2Cache``:
 
 .. code-block:: python
 
-    def __init__(self, options=None):
+    def __init__(self, options):
         super(L2Cache, self).__init__()
-        if not options or not options.l2_size:
-            return
         self.size = options.l2_size
 
 With these changes, you can now pass the cache sizes into your script from the command line like below.
