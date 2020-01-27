@@ -7,7 +7,7 @@ Full system configuration files
 ----------------------------------------
 
 This chapter describes a set of simple configuration scripts for gem5 full system simulation mode.
-These scripts are a simple set of working scripts that allow Linux to boot.
+These are a simple set of working scripts that allow us to boot Linux.
 These scripts are not a complete set of scripts that are ready to be used for architecture research.
 However, they are a good starting point for writing your own scripts.
 
@@ -19,7 +19,7 @@ Additionally, since the configuration scripts for full system simulation are tig
 x86, ARM, SPARC, etc., will all have significantly different full system configuration scripts.
 In this chapter, we will be focusing on x86, since it is one of the most popular ISAs used in gem5.
 <full-system-arm-chapter> contains information on how to configure an ARM system.
-For other ISAs, you can refer to the code in mainline gem5 in configs/common/FSConfig.py.
+For other ISAs, you can refer to the code in mainline gem5 in ``configs/common/FSConfig.py``.
 
 .. todo::
 
@@ -111,10 +111,9 @@ The details of the function are in :ref:`architecture-specific-settings`.
 After initializing the architecture-specific parts of the system, we now set up the kernel we are going to use.
 The kernel can be a vanilla Linux kernel.
 However, we usually remove a number of drivers from the kernel so the system boots faster, and these hardware blocks are not implemented in gem5.
-Details on kernel configuration are in :ref:`kernel-chapter`.
+Details on kernel configuration are in the :ref:`kernel-chapter`.
 For now, we will simply use the kernel that is supplied from gem5.org.
-You can download the kernel (and the disk image used below) from gem5.org.
-http://gem5.org/Download
+You can download the kernel (and the disk image used below) from `gem5.org<http://gem5.org/Download>`_.
 We will use the 2.6.22.9 kernel provided.
 You will need to change this line to point to the kernel you want to use.
 Using a full path will work best, but you can also use a relative path from where you execute the run script.
@@ -172,11 +171,11 @@ You can have up to four disks using this configuration by modifying the list of 
         disk0 = CowDisk(img_path)
         self.pc.south_bridge.ide.disks = [disk0]
 
-In gem5, the disk image a a copy-on-write copy of the disk.
+In gem5, the disk image is a copy-on-write copy of the disk.
 The following wrapper around the ``IdeDisk`` class creates a disk whose original image will be read-only.
 All updates to this image will persist in a new file.
 This allows you to have multiple simulations share the same base disk image.
-You can put the following code at the bottom of the system.py file.
+You can put the following code at the bottom of the ``system.py`` file.
 
 .. code-block:: python
 
@@ -217,7 +216,7 @@ For this configuration, we are going to use the simple two-level cache hierarchy
 However, there is one important change when setting up the caches in full system mode compared to syscall emulation mode.
 In full system, since we are actually modeling the real hardware, x86 and ARM architectures have hardware page table walkers that access memory.
 Therefore, we need to connect these devices to a memory port.
-It is also possible to add caches to these devices as well, but we omit that in this configuration file.
+It is also possible to add caches to these devices as well, but we will omit that in this configuration file.
 The code for the ``L1ICache`` and ``L1DCache`` can be downloaded :download:`here <../_static/scripts/part1/caches.py>` or in ``configs/learning_gem5/part1/caches.py``.
 You can simply import that file to use those caches.
 
@@ -243,7 +242,7 @@ You can simply import that file to use those caches.
         self.cpu.itb.walker.port = self.membus.slave
         self.cpu.dtb.walker.port = self.membus.slave
 
-After creating the cache hierarchy, next we need to create the memory controllers.
+After creating the cache hierarchy, we need to create the memory controllers.
 In this configuration file, it is very simple.
 We are going to create a single memory controller that is the backing store for our one memory range.
 There are many other possible configurations here.
@@ -256,7 +255,7 @@ For instance, you can have multiple memory controllers with interleaved addresse
         self.mem_cntrl = DDR3_1600_8x8(range = self.mem_ranges[0],
                                        port = self.membus.master)
 
-Finally, we we create the interrupt controllers for the CPU.
+Finally, we then create the interrupt controllers for the CPU.
 Again, this is the same as when we were using syscall emulation mode and is straightforward.
 
 .. code-block:: python
@@ -446,14 +445,14 @@ First, you must add a ``X86IntelMPProcessor`` for each processor in the system.
 Since we are only simulating one processor in this configuration, we just create one.
 Also, when creating the ``X86IntelMPProcessor`` entries, exactly one should be set as the bootstrap processor.
 Similarly, after creating the ``X86IntelMPProcessor`` entries, you must create the ``X86IntelMPIOAPIC`` entry.
-This entry is similar to a CPU entry, and importantly its ``id`` should be one more than the last CPU id (one in this case).
-This will also have to be change for multiple CPUs.
+This entry is similar to a CPU entry, and importantly its ``id`` should be one more than the last CPU id (``1`` in this case).
+This will also have to be changed for multiple CPUs.
 
 Next, we create the PCI and ICA buses, and a number of other I/O devices.
 
 Finally, we create a number of ``X86E820Entry`` objects.
 The BIOS communicates the physical memory layout to the operation system through these entries.
-The first couple of entries are for specific OS or BIOS functions, then the third entry is the main entry for physical memory.
+The first couple of entries are for specific OS or BIOS functions and the third entry is the main entry for physical memory.
 This third entry uses the same memory range that we created in the system object.
 There are another two entries created at the top of the address range to support the I/O devices for x86.
 If you want to use more than 3 GB a physical memory or add more memory ranges, you will need to modify these entries.
@@ -587,10 +586,10 @@ Another way to run gem5 in full system mode instead of connecting via a terminal
 Our ``run.py`` script takes a single option, a script to pass to gem5.
 This script is passed via ``system.script`` to the simulated system.
 
-When gem5 boots Linux, the first thing it does is try to read the script from the host into the simulator.
+When gem5 boots Linux, the first thing it does is it tries to read the script from the host into the simulator.
 This is configured within the default disk image from gem5.
 We cover how to do this with your own disk image in :ref:`disk-image-chapter`.
-See `<http://www.lowepower.com/jason/creating-disk-images-for-gem5.html>` for some details.
+See `http://www.lowepower.com/jason/creating-disk-images-for-gem5.html<http://www.lowepower.com/jason/creating-disk-images-for-gem5.html>`_ for some details.
 
 Runscripts are simply bash scripts that are automatically executed after Linux boots.
 For instance, below is a simple runscript that executes ``ls``, then exits.
@@ -607,7 +606,7 @@ If you save this script as ``test.rcS`` then run gem5 as below, gem5 will run to
 
     build/X86/gem5.opt configs/learning_gem5/part4/run.py --script=test.rcS
 
-You can view m5out/system.pc.com_1.terminal to see the output of the simulated system.
+You can view ``m5out/system.pc.com_1.terminal`` to see the output of the simulated system.
 It should look like the output below.
 
 ::
@@ -655,4 +654,4 @@ You can run ``/sbin/m5 --help`` to see all the options.
 This ``m5`` program was built with the source in ``util/m5``.
 You can also use the code in that directory to change applications to talk to the simulator.
 For instance, you can add region-of-interest markers that allow gem5 to reset its stats at the beginning of the region-of-interest and stop simulation at the end.
-See :ref:<m5-op-chapter> for more details.
+See :ref:`m5-op-chapter` for more details.
