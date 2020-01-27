@@ -19,6 +19,11 @@ Additionally, since the configuration scripts for full system simulation are tig
 x86, ARM, SPARC, etc., will all have significantly different full system configuration scripts.
 In this chapter, we will be focusing on x86, since it is one of the most popular ISAs used in gem5.
 <full-system-arm-chapter> contains information on how to configure an ARM system.
+
+.. todo::
+
+    Add the full system ARM chapter
+
 For other ISAs, you can refer to the code in mainline gem5 in ``configs/common/FSConfig.py``.
 
 .. todo::
