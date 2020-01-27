@@ -168,8 +168,8 @@ The full file can be found in the gem5 source at ``gem5/configs/learning_gem5/pa
 
 
 
-Adding caches the simple config file
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adding caches to the simple config file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now, let's add the caches we just created to the configuration script we created in the :ref:`last chapter <simple-config-chapter>`.
 
