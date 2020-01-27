@@ -108,7 +108,7 @@ In this section, I'll discuss some of the common options that can be passed on t
 More details on how to run full-system simulation can be found in the full-system simulation chapter.
 Here I'll discuss the options that are common to the two files.
 
-Most of the options discussed in this section are found in Options.py and are registered in the function ``addCommonOptions``.
+Most of the options discussed in this section are found in ``Options.py`` and are registered in the function ``addCommonOptions``.
 This section does not detail all of the options.
 To see all of the options, run the configuration script with ``--help``, or read the script's source code.
 
@@ -139,7 +139,7 @@ And we get the following as output:
 
 However, this isn't a very interesting simulation at all!
 By default, gem5 uses the atomic CPU and uses atomic memory accesses, so there's no real timing data reported!
-To confirm this, you can look at m5out/config.ini.
+To confirm this, you can look at ``m5out/config.ini``.
 The CPU is shown on line 46:
 
 ::
@@ -246,7 +246,7 @@ All of the possible options are printed when you run:
 
     build/X86/gem5.opt configs/example/se.py --help
 
-Below is a few important options from that list.
+Below are a few important options from that list.
 
 .. option:: --cpu-type=CPU_TYPE
 
@@ -298,7 +298,7 @@ Below is a few important options from that list.
 
     The options to pass to the binary, use " " around the entire string.
     This is useful when you are running a command which takes options.
-    You can pass both arguments and options (e.g., --whatever) through this variable.
+    You can pass both arguments and options (e.g., ``--whatever``) through this variable.
 
 .. option:: --output=OUTPUT
 
